@@ -15,6 +15,8 @@ import {
 	getFontSizeObjectByValue,
 	FontSizePicker,
 } from '../components/font-sizes';
+import { shouldSkipSerialization } from './style';
+import { TYPOGRAPHY_SUPPORT_KEY } from './typography';
 import { cleanEmptyObject } from './utils';
 import useSetting from '../components/use-setting';
 
@@ -60,9 +62,10 @@ function addSaveProps( props, blockType, attributes ) {
 	}
 
 	if (
-		hasBlockSupport(
+		shouldSkipSerialization(
 			blockType,
-			'typography.__experimentalSkipSerialization'
+			TYPOGRAPHY_SUPPORT_KEY,
+			'fontFamily'
 		)
 	) {
 		return props;
@@ -223,9 +226,10 @@ const withFontSizeInlineStyles = createHigherOrderComponent(
 		// and does have a class to extract the font size from.
 		if (
 			! hasBlockSupport( blockName, FONT_SIZE_SUPPORT_KEY ) ||
-			hasBlockSupport(
+			shouldSkipSerialization(
 				blockName,
-				'typography.__experimentalSkipSerialization'
+				TYPOGRAPHY_SUPPORT_KEY,
+				'fontFamily'
 			) ||
 			! fontSize ||
 			style?.typography?.fontSize
